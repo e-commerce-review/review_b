@@ -4,6 +4,7 @@ go 1.25.7
 
 require (
 	github.com/envoyproxy/protoc-gen-validate v1.3.3
+	github.com/go-kratos/kratos/v2 v2.9.2
 	github.com/google/wire v0.6.0
 	go.einride.tech/aip v0.86.3
 	go.uber.org/automaxprocs v1.6.0
@@ -14,6 +15,7 @@ require (
 
 require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
+	github.com/go-kratos/aegis v0.2.0 // indirect
 	github.com/gorilla/websocket v1.5.3 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 )
