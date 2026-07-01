@@ -1,0 +1,3 @@
+[submodule "review_api"]
+	path = api/review_api
+	url = https://github.com/e-commerce-review/review_api.git
