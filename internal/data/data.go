@@ -6,14 +6,17 @@ import (
 	v1 "review-b/api/review_api/v1"
 	"review-b/internal/conf"
 
+	consul "github.com/go-kratos/kratos/contrib/registry/consul/v3"
 	"github.com/go-kratos/kratos/v3/middleware/recovery"
 	"github.com/go-kratos/kratos/v3/middleware/validate"
+	"github.com/go-kratos/kratos/v3/registry"
 	"github.com/go-kratos/kratos/v3/transport/grpc"
 	"github.com/google/wire"
+	"github.com/hashicorp/consul/api"
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewReviewServiceClient, NewData, NewBusinessRepo)
+var ProviderSet = wire.NewSet(NewDiscovery, NewReviewServiceClient, NewData, NewBusinessRepo)
 
 // Data .
 type Data struct {
@@ -29,10 +32,24 @@ func NewData(c *conf.Data, rc v1.ReviewClient, logger *slog.Logger) (*Data, func
 	return &Data{rc: rc, log: logger}, cleanup, nil
 }
 
-func NewReviewServiceClient() v1.ReviewClient {
+func NewDiscovery(conf *conf.Registry) registry.Discovery {
+	c := api.DefaultConfig()
+	c.Address = conf.GetConsul().GetAddr()
+	c.Scheme = conf.GetConsul().GetScheme()
+	client, err := api.NewClient(c)
+	if err != nil {
+		panic(err)
+	}
+	dis := consul.New(client)
+	return dis
+}
+
+func NewReviewServiceClient(d registry.Discovery) v1.ReviewClient {
 	conn, err := grpc.NewClient(
 		context.Background(),
-		grpc.WithEndpoint("127.0.0.1:9000"),
+		grpc.WithEndpoint("discovery:///review.service"),
+		grpc.WithDiscovery(d),
+		grpc.WithTimeout(3),
 		grpc.WithMiddleware(
 			recovery.Recovery(),
 			validate.Validator(),
