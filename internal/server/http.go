@@ -1,7 +1,7 @@
 package server
 
 import (
-	v1 "review-b/api/business"
+	v1 "review-b/api/business/v1"
 	"review-b/internal/conf"
 	"review-b/internal/service"
 
