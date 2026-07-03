@@ -3,19 +3,19 @@
 
 openapi: 3.0.3
 info:
-    title: Business API
+    title: Operation API
     version: 0.0.1
 paths:
-    /business/v1/review/reply:
+    o/v1/appeal/audit:
         post:
             tags:
-                - Business
-            operationId: Business_ReplyReview
+                - Operation
+            operationId: Operation_AuditAppeal
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.business.v1.ReplyReviewRequest'
+                            $ref: '#/components/schemas/api.operation.v1.AuditAppealRequest'
                 required: true
             responses:
                 "200":
@@ -23,27 +23,63 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.business.v1.ReplyReviewReply'
+                                $ref: '#/components/schemas/api.operation.v1.AuditAppealReply'
+    o/v1/review/audit:
+        post:
+            tags:
+                - Operation
+            operationId: Operation_AuditReview
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.operation.v1.AuditReviewRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.operation.v1.AuditReviewReply'
 components:
     schemas:
-        api.business.v1.ReplyReviewReply:
+        api.operation.v1.AuditAppealReply:
+            type: object
+            properties: {}
+            description: 对申诉进行审核的返回值
+        api.operation.v1.AuditAppealRequest:
             type: object
             properties:
-                replyID:
+                appealID:
                     type: string
-            description: 回复评价的返回值
-        api.business.v1.ReplyReviewRequest:
+                reviewID:
+                    type: string
+                status:
+                    type: integer
+                    format: int32
+                opUser:
+                    type: string
+                opReason:
+                    type: string
+                opRemarks:
+                    type: string
+        api.operation.v1.AuditReviewReply:
+            type: object
+            properties: {}
+        api.operation.v1.AuditReviewRequest:
             type: object
             properties:
                 reviewID:
                     type: string
-                storeID:
+                status:
+                    type: integer
+                    format: int32
+                opUser:
                     type: string
-                content:
+                opReason:
                     type: string
-                picInfo:
-                    type: string
-                videoInfo:
+                opRemarks:
                     type: string
 tags:
-    - name: Business
+    - name: Operation

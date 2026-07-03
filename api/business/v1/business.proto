@@ -16,6 +16,13 @@ service Business{
             body: "*"
         };
     }
+
+    rpc AppealReview(AppealReviewRequest)returns (AppealReviewReply){
+        option (google.api.http) = {
+            post: "/business/v1/review/appeal",
+            body: "*"
+        };
+    }
 }
 
 message ReplyReviewRequest{
@@ -29,4 +36,17 @@ message ReplyReviewRequest{
 // 回复评价的返回值
 message ReplyReviewReply{
 	int64 replyID = 1;
+}
+
+message AppealReviewRequest{
+	int64 reviewID = 1 [(validate.rules).int64 = {gt: 0}];
+	int64 storeID = 2 [(validate.rules).int64 = {gt: 0}];
+	string reason = 3 [(validate.rules).string = {min_len: 2, max_len:200}];
+	string content = 4 [(validate.rules).string = {min_len: 2, max_len:200}];
+	string picInfo = 5;
+	string videoInfo = 6;
+}
+
+message AppealReviewReply{
+    int64 appealID = 1;
 }

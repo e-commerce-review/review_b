@@ -1,7 +1,7 @@
 GOHOSTOS:=$(shell go env GOHOSTOS)
 GOPATH:=$(shell go env GOPATH)
 VERSION=$(shell git describe --tags --always 2>/dev/null || echo dev)
-API_PROTO_FILES=$(shell find api/business -name '*.proto')
+API_PROTO_FILES=$(shell find api -name *.proto)
 KRATOS_THIRD_PARTY=$(shell go list -m -f '{{.Dir}}' github.com/go-kratos/kratos/v3)/third_party
 
 .PHONY: init

@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-http v2.9.2
 // - protoc             (unknown)
-// source: business/business.proto
+// source: business/v1/business.proto
 
 package v1
 
@@ -17,15 +17,18 @@ var _ = new(context.Context)
 
 const _ = http.SupportPackageIsVersion3
 
+const OperationBusinessAppealReview = "/api.business.v1.Business/AppealReview"
 const OperationBusinessReplyReview = "/api.business.v1.Business/ReplyReview"
 
 type BusinessHTTPServer interface {
+	AppealReview(context.Context, *AppealReviewRequest) (*AppealReviewReply, error)
 	ReplyReview(context.Context, *ReplyReviewRequest) (*ReplyReviewReply, error)
 }
 
 func RegisterBusinessHTTPServer(s *http.Server, srv BusinessHTTPServer) {
 	r := s.Route("/")
 	r.Handle("POST", "/business/v1/review/reply", _Business_ReplyReview0_HTTP_Handler(srv))
+	r.Handle("POST", "b/v1/review/appeal", _Business_AppealReview0_HTTP_Handler(srv))
 }
 
 func _Business_ReplyReview0_HTTP_Handler(srv BusinessHTTPServer) func(ctx http.Context) error {
@@ -47,7 +50,27 @@ func _Business_ReplyReview0_HTTP_Handler(srv BusinessHTTPServer) func(ctx http.C
 	}
 }
 
+func _Business_AppealReview0_HTTP_Handler(srv BusinessHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in AppealReviewRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationBusinessAppealReview)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.AppealReview(ctx, req.(*AppealReviewRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*AppealReviewReply)
+		return ctx.Result(200, reply)
+	}
+}
+
 type BusinessHTTPClient interface {
+	AppealReview(ctx context.Context, req *AppealReviewRequest, opts ...http.CallOption) (rsp *AppealReviewReply, err error)
 	ReplyReview(ctx context.Context, req *ReplyReviewRequest, opts ...http.CallOption) (rsp *ReplyReviewReply, err error)
 }
 
@@ -57,6 +80,23 @@ type BusinessHTTPClientImpl struct {
 
 func NewBusinessHTTPClient(client *http.Client) BusinessHTTPClient {
 	return &BusinessHTTPClientImpl{client}
+}
+
+func (c *BusinessHTTPClientImpl) AppealReview(ctx context.Context, in *AppealReviewRequest, opts ...http.CallOption) (*AppealReviewReply, error) {
+	var out AppealReviewReply
+	pattern := "b/v1/review/appeal"
+	path := http.BuildPath(pattern, in)
+	opts = append([]http.CallOption{
+		http.Accept("application/protojson"),
+		http.ContentType("application/protojson"),
+		http.Operation(OperationBusinessAppealReview),
+		http.PathTemplate(pattern),
+	}, opts...)
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
 }
 
 func (c *BusinessHTTPClientImpl) ReplyReview(ctx context.Context, in *ReplyReviewRequest, opts ...http.CallOption) (*ReplyReviewReply, error) {
