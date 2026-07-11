@@ -296,10 +296,10 @@ const file_api_business_v1_business_proto_rawDesc = "" +
 	"\apicInfo\x18\x05 \x01(\tR\apicInfo\x12\x1c\n" +
 	"\tvideoInfo\x18\x06 \x01(\tR\tvideoInfo\"/\n" +
 	"\x11AppealReviewReply\x12\x1a\n" +
-	"\bappealID\x18\x01 \x01(\x03R\bappealID2\x80\x02\n" +
+	"\bappealID\x18\x01 \x01(\x03R\bappealID2\x81\x02\n" +
 	"\bBusiness\x12{\n" +
-	"\vReplyReview\x12#.api.business.v1.ReplyReviewRequest\x1a!.api.business.v1.ReplyReviewReply\"$\x82\xd3\xe4\x93\x02\x1e:\x01*\"\x19/business/v1/review/reply\x12w\n" +
-	"\fAppealReview\x12$.api.business.v1.AppealReviewRequest\x1a\".api.business.v1.AppealReviewReply\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12b/v1/review/appealB0\n" +
+	"\vReplyReview\x12#.api.business.v1.ReplyReviewRequest\x1a!.api.business.v1.ReplyReviewReply\"$\x82\xd3\xe4\x93\x02\x1e:\x01*\"\x19/business/v1/review/reply\x12x\n" +
+	"\fAppealReview\x12$.api.business.v1.AppealReviewRequest\x1a\".api.business.v1.AppealReviewReply\"\x1e\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/b/v1/review/appealB0\n" +
 	"\x0fapi.business.v1P\x01Z\x1breview-b/api/business/v1;v1b\x06proto3"
 
 var (

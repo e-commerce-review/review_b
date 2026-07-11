@@ -19,7 +19,7 @@ service Business{
 
     rpc AppealReview(AppealReviewRequest)returns (AppealReviewReply){
         option (google.api.http) = {
-            post: "/business/v1/review/appeal",
+            post: "/b/v1/review/appeal",
             body: "*"
         };
     }
